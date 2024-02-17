@@ -1,0 +1,44 @@
+{% extends 'base.html' %} 
+
+{% block page_title %} 
+    Lista de Tarefas
+{% endblock page_title %} 
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Lista de Tarefas</h1>
+
+    {% if todo_list %}
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Título</th>
+                <th scope="col">Criado em</th>
+                <th scope="col">Data de Entrega</th>
+                <th scope="col">Finalizado em</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in todo_list %}
+            <tr>
+                <th scope="row">{{ todo.pk }}</th>
+                <td>{{ todo.title }}</td>
+                <td>{{ todo.created_at }}</td>
+                <td>{{ todo.deadline }}</td>
+                <td>{{ todo.finished_at|default:"-" }}</td>
+                <td>
+                    <a href="{% url 'todo_complete' pk=todo.pk %}" class="btn btn-outline-success btn-sm {% if todo.finished_at %}disabled{% endif %}"><i class="bi bi-check"></i> Concluir</a>
+                    <a href="{% url 'todo_update' pk=todo.pk %}" class="btn btn-outline-info btn-sm {% if todo.finished_at %}disabled{% endif %}"><i class="bi bi-pencil"></i> Editar</a>
+                    <a href="{% url 'todo_delete' pk=todo.pk %}" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i> Deletar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h2>Não há tarefas cadastradas</h2>
+    {% endif %}
+</div>
+{% endblock content %}
